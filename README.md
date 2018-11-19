@@ -17,7 +17,7 @@ Windows and Linux Installers|[See releases](https://github.com/DataDog/dd-trace-
 ## Build Status
 
 Pipeline|`develop`|`master`
--|-|-|-
+-|-|-
 Windows C# unit tests|[![Build Status](https://dev.azure.com/datadog-apm/dd-trace-csharp/_apis/build/status/Windows/windows-unit-tests-managed?branchName=develop)](https://dev.azure.com/datadog-apm/dd-trace-csharp/_build?definitionId=1)|[![Build Status](https://dev.azure.com/datadog-apm/dd-trace-csharp/_apis/build/status/Windows/windows-unit-tests-managed?branchName=master)](https://dev.azure.com/datadog-apm/dd-trace-csharp/_build?definitionId=1)
 Windows C++ unit tests|[![Build Status](https://dev.azure.com/datadog-apm/dd-trace-csharp/_apis/build/status/Windows/windows-unit-tests-native?branchName=develop)](https://dev.azure.com/datadog-apm/dd-trace-csharp/_build?definitionId=11)|[![Build Status](https://dev.azure.com/datadog-apm/dd-trace-csharp/_apis/build/status/Windows/windows-unit-tests-native?branchName=master)](https://dev.azure.com/datadog-apm/dd-trace-csharp/_build?definitionId=11)
 Windows integration tests|[![Build Status](https://dev.azure.com/datadog-apm/dd-trace-csharp/_apis/build/status/Windows/windows-integration-tests?branchName=develop)](https://dev.azure.com/datadog-apm/dd-trace-csharp/_build?definitionId=5)|[![Build Status](https://dev.azure.com/datadog-apm/dd-trace-csharp/_apis/build/status/Windows/windows-integration-tests?branchName=master)](https://dev.azure.com/datadog-apm/dd-trace-csharp/_build?definitionId=5)
