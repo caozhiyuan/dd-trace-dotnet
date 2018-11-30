@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "../../src/Datadog.Trace.ClrProfiler.Native/clr_helpers.h"
+#include <gtest/gtest.h>
 
 using namespace trace;
 

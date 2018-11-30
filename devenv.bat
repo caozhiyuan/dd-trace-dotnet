@@ -57,10 +57,10 @@ SET DD_INTEGRATIONS=%~dp0\integrations.json;%~dp0\test-integrations.json
 
 if "%start_visual_studio%" == "true" (
     echo Starting Visual Studio...
-    IF EXIST "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Professional\Common7\IDE\devenv.exe" (
-    START "Visual Studio" "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Professional\Common7\IDE\devenv.exe" "%~dp0\Datadog.Trace.sln"
+    IF EXIST "D:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\devenv.exe" (
+    START "Visual Studio" "D:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\devenv.exe" "%~dp0\Datadog.Trace.sln"
     ) ELSE (
-    START "Visual Studio" "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe" "%~dp0\Datadog.Trace.sln"
+    START "Visual Studio" "D:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe" "%~dp0\Datadog.Trace.sln"
     )
 )
 goto end

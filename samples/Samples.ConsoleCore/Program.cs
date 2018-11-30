@@ -16,6 +16,7 @@ namespace Samples.ConsoleCore
             serializer.Serialize(Console.Out, output);
 
             Console.WriteLine();
+            Console.ReadLine();
         }
 
         private object Run()

@@ -8,6 +8,7 @@
 #include <string>
 
 #include "../../src/Datadog.Trace.ClrProfiler.Native/integration_loader.h"
+#include <gtest/gtest.h>
 
 using namespace trace;
 

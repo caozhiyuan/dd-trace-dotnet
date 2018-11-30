@@ -2,6 +2,7 @@
 
 #include "../../src/Datadog.Trace.ClrProfiler.Native/clr_helpers.h"
 #include "../../src/Datadog.Trace.ClrProfiler.Native/metadata_builder.h"
+#include <gtest/gtest.h>
 
 using namespace trace;
 
