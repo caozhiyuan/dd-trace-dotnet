@@ -36,7 +36,7 @@ class DISABLED_CLRHelperTest : public ::testing::Test {
     ASSERT_TRUE(SUCCEEDED(hr));
 
     ComPtr<IUnknown> metadataInterfaces;
-    hr = metadata_dispenser_->OpenScope(L"Samples.ExampleLibrary.dll",
+    hr = metadata_dispenser_->OpenScope(L"D:\\GitHub\\dd-trace-dotnet\\test\\Datadog.Trace.ClrProfiler.Native.Tests\\bin\\Debug\\x64\\Samples.ExampleLibrary.dll",
                                         ofReadWriteMask, IID_IMetaDataImport2,
                                         metadataInterfaces.GetAddressOf());
     ASSERT_TRUE(SUCCEEDED(hr));
