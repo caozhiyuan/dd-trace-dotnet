@@ -3,6 +3,6 @@
 
   <!-- StyleCop -->
   <ItemGroup>
-    <Compile Include="..\GlobalSuppressions.cs" Link="GlobalSuppressions.benchmarks.cs" />
+    <Compile Include="..\GlobalSuppressions.cs" Link="GlobalSuppressions.tools.cs" />
   </ItemGroup>
 </Project>

@@ -9,6 +9,7 @@
 
 #include "../../src/Datadog.Trace.ClrProfiler.Native/integration_loader.h"
 #include <gtest/gtest.h>
+#include "../../src/Datadog.Trace.ClrProfiler.Native/environment_variables.h"
 
 using namespace trace;
 
@@ -69,13 +70,13 @@ TEST(IntegrationLoaderTest,
 
 TEST(IntegrationLoaderTest, HandlesSingleIntegrationWithMethodReplacements) {
   std::stringstream str(R"TEXT(
-        [{ 
-            "name": "test-integration", 
+        [{
+            "name": "test-integration",
             "method_replacements": [{
                 "caller": { },
                 "target": { "assembly": "Assembly.One", "type": "Type.One", "method": "Method.One" },
                 "wrapper": { "assembly": "Assembly.Two", "type": "Type.Two", "method": "Method.Two", "signature": [0, 1, 1, 28] }
-            }] 
+            }]
         }]
     )TEXT");
 
@@ -100,12 +101,12 @@ TEST(IntegrationLoaderTest, HandlesSingleIntegrationWithMethodReplacements) {
 
 TEST(IntegrationLoaderTest, HandlesSingleIntegrationWithMissingCaller) {
   std::stringstream str(R"TEXT(
-        [{ 
-            "name": "test-integration", 
+        [{
+            "name": "test-integration",
             "method_replacements": [{
                 "target": { "assembly": "Assembly.One", "type": "Type.One", "method": "Method.One" },
                 "wrapper": { "assembly": "Assembly.Two", "type": "Type.Two", "method": "Method.Two", "signature": [0, 1, 1, 28] }
-            }] 
+            }]
         }]
     )TEXT");
 
@@ -130,12 +131,12 @@ TEST(IntegrationLoaderTest, HandlesSingleIntegrationWithMissingCaller) {
 
 TEST(IntegrationLoaderTest, HandlesSingleIntegrationWithInvalidTarget) {
   std::stringstream str(R"TEXT(
-        [{ 
-            "name": "test-integration", 
+        [{
+            "name": "test-integration",
             "method_replacements": [{
                 "target": 1234,
                 "wrapper": { "assembly": "Assembly.Two", "type": "Type.Two", "method": "Method.Two" }
-            }] 
+            }]
         }]
     )TEXT");
 
@@ -167,7 +168,7 @@ TEST(IntegrationLoaderTest, LoadsFromEnvironment) {
 
   auto name = tmpname1.wstring() + L";" + tmpname2.wstring();
 
-  SetEnvironmentVariableW(kIntegrationsEnvironmentName.data(), name.data());
+  SetEnvironmentVariableW(trace::environment::integrations_path.data(), name.data());
 
   std::vector<std::wstring> expected_names = {L"test-integration-1",
                                               L"test-integration-2"};

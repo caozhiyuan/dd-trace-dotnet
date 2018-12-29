@@ -57,14 +57,15 @@ WSTRING GetAssemblyName(const ComPtr<IMetaDataAssemblyImport>& assembly_import,
 FunctionInfo GetFunctionInfo(const ComPtr<IMetaDataImport2>& metadata_import,
                              const mdToken& token) {
   mdToken parent_token = mdTokenNil;
-  WCHAR function_name[kNameMaxSize];
+  WCHAR function_name[kNameMaxSize]{};
   DWORD function_name_len = 0;
 
   PCCOR_SIGNATURE raw_signature;
   ULONG raw_signature_len;
 
   HRESULT hr = E_FAIL;
-  switch (TypeFromToken(token)) {
+  const auto token_type = TypeFromToken(token);
+  switch (token_type) {
     case mdtMemberRef:
       hr = metadata_import->GetMemberRefProps(
           token, &parent_token, function_name, kNameMaxSize, &function_name_len,
@@ -88,8 +89,7 @@ FunctionInfo GetFunctionInfo(const ComPtr<IMetaDataImport2>& metadata_import,
       function_name_len = (DWORD)(generic_info.name.length() + 1);
     } break;
     default:
-      Warn("[trace::GetFunctionInfo] unknown token type: {}",
-           TypeFromToken(token));
+      Warn("[trace::GetFunctionInfo] unknown token type: {}", token_type);
   }
   if (FAILED(hr) || function_name_len == 0) {
     return {};
@@ -101,15 +101,15 @@ FunctionInfo GetFunctionInfo(const ComPtr<IMetaDataImport2>& metadata_import,
   }
 
   // parent_token could be: TypeDef, TypeRef, TypeSpec, ModuleRef, MethodDef
+  const auto type_info = GetTypeInfo(metadata_import, parent_token);
 
-  return {token, WSTRING(function_name),
-          GetTypeInfo(metadata_import, parent_token),
+  return {token, WSTRING(function_name), type_info,
           MethodSignature(signature_data)};
 }
 
 ModuleInfo GetModuleInfo(ICorProfilerInfo3* info, const ModuleID& module_id) {
   const DWORD module_path_size = 260;
-  WCHAR module_path[module_path_size];
+  WCHAR module_path[module_path_size]{};
   DWORD module_path_len = 0;
   LPCBYTE base_load_address;
   AssemblyID assembly_id = 0;
@@ -127,7 +127,7 @@ ModuleInfo GetModuleInfo(ICorProfilerInfo3* info, const ModuleID& module_id) {
 TypeInfo GetTypeInfo(const ComPtr<IMetaDataImport2>& metadata_import,
                      const mdToken& token) {
   mdToken parent_token = mdTokenNil;
-  WCHAR type_name[kNameMaxSize];
+  WCHAR type_name[kNameMaxSize]{};
   DWORD type_name_len = 0;
 
   HRESULT hr = E_FAIL;
@@ -141,9 +141,23 @@ TypeInfo GetTypeInfo(const ComPtr<IMetaDataImport2>& metadata_import,
       hr = metadata_import->GetTypeRefProps(token, &parent_token, type_name,
                                             kNameMaxSize, &type_name_len);
       break;
-    case mdtTypeSpec:
-      // do we need to handle this case?
-      break;
+    case mdtTypeSpec: {
+      PCCOR_SIGNATURE signature{};
+      ULONG signature_length{};
+
+      hr = metadata_import->GetTypeSpecFromToken(token, &signature,
+                                                 &signature_length);
+
+      if (FAILED(hr) || signature_length < 3) {
+        return {};
+      }
+
+      if (signature[0] & ELEMENT_TYPE_GENERICINST) {
+        mdToken type_token;
+        CorSigUncompressToken(&signature[2], &type_token);
+        return GetTypeInfo(metadata_import, type_token);
+      }
+    } break;
     case mdtModuleRef:
       metadata_import->GetModuleRefProps(token, type_name, kNameMaxSize,
                                          &type_name_len);
@@ -171,6 +185,30 @@ mdAssemblyRef FindAssemblyRef(
     }
   }
   return mdAssemblyRefNil;
+}
+
+std::vector<Integration> FilterIntegrationsByName(
+    const std::vector<Integration>& integrations,
+    const std::vector<WSTRING> integration_names) {
+  std::vector<Integration> enabled;
+
+  for (auto& i : integrations) {
+    bool disabled = false;
+
+    for (auto& disabled_integration : integration_names) {
+      if (i.integration_name == disabled_integration) {
+        // this integration is disabled, skip it
+        disabled = true;
+        break;
+      }
+    }
+
+    if (!disabled) {
+      enabled.push_back(i);
+    }
+  }
+
+  return enabled;
 }
 
 std::vector<Integration> FilterIntegrationsByCaller(

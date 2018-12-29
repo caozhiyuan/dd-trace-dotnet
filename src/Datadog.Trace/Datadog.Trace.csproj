@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45;net46</TargetFrameworks>
-    <Version>0.5.1-beta</Version>
+    <TargetFrameworks>netstandard2.0;net45;net461</TargetFrameworks>
+    <Version>0.6.0-beta</Version>
 
     <!-- NuGet -->
     <Title>Datadog APM</Title>

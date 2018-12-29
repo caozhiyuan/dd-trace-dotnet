@@ -1,4 +1,4 @@
-#if NET45
+#if !NETSTANDARD2_0
 
 using System;
 using System.Collections.Generic;
@@ -23,9 +23,15 @@ namespace Datadog.Trace.ClrProfiler.Integrations
         /// <param name="controllerContext">The controller context for the call</param>
         /// <param name="cancellationTokenSource">The cancellation token source</param>
         /// <returns>A task with the result</returns>
+        [InterceptMethod(
+            TargetAssembly = "System.Web.Http",
+            TargetType = "System.Web.Http.Controllers.IHttpController")]
         public static object ExecuteAsync(object apiController, object controllerContext, object cancellationTokenSource)
         {
-            var cancellationToken = ((CancellationTokenSource)cancellationTokenSource).Token;
+            if (apiController == null) { throw new ArgumentNullException(nameof(apiController)); }
+
+            var tokenSource = cancellationTokenSource as CancellationTokenSource;
+            var cancellationToken = tokenSource?.Token ?? CancellationToken.None;
             return ExecuteAsyncInternal(apiController, controllerContext, cancellationToken);
         }
 

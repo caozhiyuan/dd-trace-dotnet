@@ -58,9 +58,13 @@ namespace Datadog.Trace
         public bool Error { get; set; }
 
         /// <summary>
-        /// Gets the service name
+        /// Gets or sets the service name
         /// </summary>
-        public string ServiceName => _context.ServiceName;
+        public string ServiceName
+        {
+            get => _context.ServiceName;
+            set => _context.ServiceName = value;
+        }
 
         /// <summary>
         /// Gets the trace's unique identifier.
