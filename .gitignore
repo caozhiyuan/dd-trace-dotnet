@@ -265,3 +265,4 @@ __pycache__/
 BenchmarkDotNet.Artifacts/
 
 deploy/linux/
+/tools
