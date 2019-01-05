@@ -55,6 +55,8 @@ SET DD_PROFILER_PROCESSES=w3wp.exe;iisexpress.exe;Samples.AspNetCoreMvc2.exe;dot
 rem Set location of integration definitions
 SET DD_INTEGRATIONS=%~dp0\integrations.json;%~dp0\test-integrations.json
 
+SET DOTNET_ADDITIONAL_DEPS=%PROGRAMFILES%\dotnet\x64\additionalDeps\Datadog.Trace.ClrProfiler.Managed
+
 if "%start_visual_studio%" == "true" (
     echo Starting Visual Studio...
     IF EXIST "D:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\devenv.exe" (

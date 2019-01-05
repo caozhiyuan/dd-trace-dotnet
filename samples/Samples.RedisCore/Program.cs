@@ -11,20 +11,22 @@ namespace Samples.RedisCore
     {
         static void Main(string[] args)
         {
-            string prefix = "";
-            if (args.Length > 1)
-            {
-                prefix = args[1];
-            }
+            //string prefix = "";
+            //if (args.Length > 1)
+            //{
+            //    prefix = args[1];
+            //}
 
-            if (args.Length == 0 || args.Contains("ServiceStack"))
-            {
-                RunServiceStack(prefix);
-            }
-            if (args.Length == 0 || args.Contains("StackExchange"))
-            {
-                RunStackExchange(prefix);
-            }
+            //if (args.Length == 0 || args.Contains("ServiceStack"))
+            //{
+            //    RunServiceStack(prefix);
+            //}
+            //if (args.Length == 0 || args.Contains("StackExchange"))
+            //{
+            //    RunStackExchange(prefix);
+            //}
+            AppDomain.CurrentDomain.Load("Datadog.Trace.ClrProfiler.Managed");
+            RunStackExchange("StackExchange");
         }
 
         private static string Host()
